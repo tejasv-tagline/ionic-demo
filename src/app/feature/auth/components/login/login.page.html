@@ -18,5 +18,15 @@
     <ion-button expand="full" type="submit" [disabled]="!loginForm.valid"
       >Login</ion-button
     >
+    <span class="signup-link"
+      >Need an account? <a routerLink="/signup">SIGN UP</a></span
+    >
   </form>
+  <ion-toast
+    [isOpen]="isToastOpen"
+    message="Invalid Credintials"
+    [duration]="5000"
+    position="top"
+    (didDismiss)="setOpen(false)"
+  ></ion-toast>
 </ion-content>

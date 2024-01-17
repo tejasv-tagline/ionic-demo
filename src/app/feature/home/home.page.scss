@@ -46,10 +46,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  .button-clear{
+  .button-clear {
     font-size: 20px;
     &.plus-button {
       font-size: 40px;
     }
+  }
+}
+
+.logo {
+  padding: 4px;
+  ion-img {
+    height: 40px;
+    width: 100px;
   }
 }

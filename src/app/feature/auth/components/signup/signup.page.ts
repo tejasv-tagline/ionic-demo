@@ -4,14 +4,14 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { AuthService } from '../../service/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.page.html',
   styleUrls: ['./signup.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   providers: [AngularFireAuthModule]
 })
 export class SignupPage {
@@ -19,6 +19,7 @@ export class SignupPage {
   private router = inject(Router);
   private authService = inject(AuthService);
   signUpForm!: FormGroup;
+  isToastOpen = false;
 
   constructor() {
     this.login()
@@ -38,5 +39,9 @@ export class SignupPage {
         if (result) this.router.navigate(['/login']);
       })
     }
+  }
+
+  setOpen(isOpen: boolean) {
+    this.isToastOpen = isOpen;
   }
 }

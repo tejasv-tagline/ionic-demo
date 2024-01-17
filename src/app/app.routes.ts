@@ -2,24 +2,24 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: 'home',
+    path: '',
     loadComponent: () => import('./feature/dashboard/dashboard.page').then((m) => m.DashboardPage),
-    children:[
+    children: [
       {
         path: 'home',
         loadComponent: () => import('./feature/home/home.page').then((m) => m.HomePage),
       },
       {
         path: 'search',
-        loadComponent: () => import('./feature/search/search.page').then( m => m.SearchPage)
+        loadComponent: () => import('./feature/search/search.page').then(m => m.SearchPage)
       },
       {
         path: 'chat',
-        loadComponent: () => import('./feature/chat/chat.page').then( m => m.ChatPage)
+        loadComponent: () => import('./feature/chat/chat.page').then(m => m.ChatPage)
       },
       {
         path: '',
-        redirectTo:'home',
+        redirectTo: 'home',
         pathMatch: 'full',
       },
     ]
@@ -33,8 +33,7 @@ export const routes: Routes = [
     loadComponent: () => import('./feature/auth/components/signup/signup.page').then(m => m.SignupPage)
   },
   {
-    path: '',
+    path: '**',
     redirectTo: 'login',
-    pathMatch: 'full',
   },
 ];

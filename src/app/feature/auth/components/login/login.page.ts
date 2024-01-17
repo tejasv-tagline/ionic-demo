@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { AuthService } from '../../service/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, RouterModule]
 })
 export class LoginPage {
   private fb = inject(FormBuilder);
@@ -18,6 +18,7 @@ export class LoginPage {
   private router = inject(Router);
   loginForm!: FormGroup;
   user: any;
+  isToastOpen = false;
 
   constructor() {
     this.login()
@@ -39,7 +40,13 @@ export class LoginPage {
             this.router.navigate(['/home']);
           });
         }
-      })
+      }).catch((error) => {
+        this.isToastOpen = true;
+      });
     }
+  }
+
+  setOpen(isOpen: boolean) {
+    this.isToastOpen = isOpen;
   }
 }
