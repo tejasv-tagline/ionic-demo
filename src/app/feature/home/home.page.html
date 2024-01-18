@@ -4,7 +4,37 @@
       <ion-title>Tagline</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-content class="ion-padding">
-    <p>Home</p>
+  <ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-list>
+      <ion-item-group *ngFor="let post of posts; let i=index">
+        <ion-item-divider>
+          <ion-avatar slot="start">
+            <img
+              [src]="post.image"
+              alt="post">
+          </ion-avatar>
+          <ion-label> <h3>{{post.name}}</h3>  </ion-label>
+          <ion-icon name="ellipsis-vertical-outline" slot="end" [id]="'open-action-sheet' + i"></ion-icon>
+        </ion-item-divider>
+        <ion-img
+          [src]="post.image"
+          alt="The Wisconsin State Capitol building in Madison, WI at night"></ion-img>
+        <ion-item-divider>
+          <ion-icon [name]="(isLiked && i === currentLike) ? 'heart' : 'heart-outline'" slot="start" (click)="onLike(i)" [ngClass]="{'heart':(isLiked && i === currentLike)}"></ion-icon>
+          <!-- <ion-icon name="heart" slot="start"></ion-icon> -->
+        </ion-item-divider>
+        <ion-action-sheet
+          [trigger]="'open-action-sheet' + i"
+          [buttons]="actionSheetButtons"
+          (didDismiss)="logResult($event)"
+        ></ion-action-sheet>
+      </ion-item-group>
+    </ion-list>
+    <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+      <ion-infinite-scroll-content loadingText="Please wait..."></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </ion-content>
 </div>

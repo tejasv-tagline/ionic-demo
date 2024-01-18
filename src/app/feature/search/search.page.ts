@@ -15,6 +15,12 @@ export class SearchPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('Search ');
+  }
+
+  handleInput(event:any) {
+    const query = event.target.value.toLowerCase();
+    console.log('query :>> ', query);
   }
 
 }
