@@ -1,29 +1,33 @@
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, Input, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { ProfileDetailsPage } from './components/profile-details/profile-details.page';
 import { UserService } from 'src/app/services/user.service';
 import { PostService } from 'src/app/services/post.service';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.page.html',
-  styleUrls: ['./profile.page.scss'],
+  selector: 'app-profile-details',
+  templateUrl: './profile-details.page.html',
+  styleUrls: ['./profile-details.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [IonicModule, CommonModule, FormsModule,RouterModule]
 })
-export class ProfilePage {
+export class ProfileDetailsPage implements OnInit {
 
   private userService = inject(UserService);
   private postService = inject(PostService);
+  private activeRouter = inject(ActivatedRoute);
 
-
-  @Input() private userId!: string;
+  private userId!: string;
   public user: any;
   public posts: any;
 
-  constructor() {}
+  constructor() {
+    this.activeRouter.params.subscribe((params:any)=>{
+      this.userId = params.userId;
+    });
+  }
 
   ngOnInit() {
     if (this.userId) {
@@ -40,6 +44,4 @@ export class ProfilePage {
     }
   }
 
-  public component = ProfileDetailsPage;
-  
 }

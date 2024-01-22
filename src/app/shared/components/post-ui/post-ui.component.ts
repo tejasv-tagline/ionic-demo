@@ -49,12 +49,26 @@ export class PostUiComponent {
       this.postService
         .removeLike(this.post.id, this.user.id)
         .then(() => {})
-        .catch((e: any) => console.error('ERROR : ', e));
+        .catch(async (e: any) => {
+          const toast = await this.toastController.create({
+            message: 'Somthing went wrong!',
+            duration: 1500,
+            position: 'top',
+          });
+          await toast.present();
+        });
     } else {
       this.postService
         .addLike(this.post.id, likedDetails)
         .then(() => {})
-        .catch((e: any) => console.error('ERROR : ', e));
+        .catch(async (e: any) => {
+          const toast = await this.toastController.create({
+            message: 'Somthing went wrong!',
+            duration: 1500,
+            position: 'top',
+          });
+          await toast.present();
+        });
     }
   }
 }

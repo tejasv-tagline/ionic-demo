@@ -6,8 +6,19 @@
     </ion-toolbar>
   </ion-header>
 </ion-content> -->
-<ion-header [translucent]="true">
+<!-- <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title size="large">Post Details</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/profile/' + currentUser.id"></ion-back-button>
+    </ion-buttons>
     <ion-title size="large">Post Details</ion-title>
   </ion-toolbar>
 </ion-header>

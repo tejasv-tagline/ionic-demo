@@ -28,7 +28,11 @@
       {{ post.likes?.length - 1 }} Others } </ion-text
     >}
   </ion-item-divider>
-  <ion-text>Test</ion-text>
+  @if(post.postMessage){
+    <ion-item-divider class="content-divider">
+      <ion-text>{{post.postMessage}}</ion-text>
+    </ion-item-divider>
+  }
   <!-- [buttons]="actionSheetButtons" -->
   <ion-action-sheet
     [trigger]="'open-action-sheet' + post.id"

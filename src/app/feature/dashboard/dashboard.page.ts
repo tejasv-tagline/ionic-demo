@@ -77,22 +77,9 @@ export class DashboardPage implements OnInit {
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    // const userDetails = JSON.parse(localStorage.getItem('userDetails') || '');
     const userDetails = this.localstorageService.getItem('userDetails');
     if (ev.detail.role === 'confirm') {
       this.uploadPost(this.uploadFileObj, userDetails);
-      // const data = {
-      //   userId: userDetails.id,
-      //   postImage: this.downloadURL,
-      //   postTime: new Date(),
-      //   userName: userDetails.name
-      // };
-      // this.postService.addPost(data).then((res:any)=>{
-      //   console.log('res :>> ', res);
-      //   this.isToastOpen = true;
-      // });
-      // this.message = `Hello, ${ev.detail.data}!`;
-      // console.log('this.message :>> ', this.message);
     } else {
       this.clearImageonCancel();
     }

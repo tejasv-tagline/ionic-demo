@@ -4,6 +4,7 @@ import {
   RouteReuseStrategy,
   provideRouter,
   withComponentInputBinding,
+  withRouterConfig,
 } from '@angular/router';
 import {
   IonicRouteStrategy,
@@ -29,7 +30,7 @@ bootstrapApplication(AppComponent, {
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
 
-    provideRouter(routes, withComponentInputBinding()),
+    provideRouter(routes, withComponentInputBinding(), withRouterConfig({ paramsInheritanceStrategy: 'always' })),
     importProvidersFrom(
       AngularFireModule.initializeApp(environment.firebaseConfig),
       AngularFireAuthModule,

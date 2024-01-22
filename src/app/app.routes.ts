@@ -65,4 +65,8 @@ export const routes: Routes = [
     path: '**',
     redirectTo: 'login',
   },
+  // {
+  //   path: 'profile-details',
+  //   loadComponent: () => import('./feature/profile/components/profile-details/profile-details.page').then( m => m.ProfileDetailsPage)
+  // },
 ];

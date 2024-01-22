@@ -1,5 +1,9 @@
 :host ion-item-divider {
     padding: 10px 0px 10px 15px;
+    border-bottom: none;
+    &.content-divider{
+        padding-top:0px
+    }
   }
   :host ion-label {
     margin-left: 10px;

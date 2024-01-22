@@ -1,0 +1,36 @@
+.profile {
+    padding: 10px;
+    img {
+      height: 100px;
+      width: 100px;
+      border-radius: 50%;
+    }
+    .main {
+      margin-left: 20px;
+      .stats {
+        width: 54%;
+        div {
+          p {
+            margin-bottom: 0;
+            margin-right: 16px;
+            text-align: center;
+            &:last-child {
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .posts {
+    ion-nav-link {
+      width: 30%;
+      margin: 8px 4px;
+      img {
+        height: 100px;
+        width: 100%;
+      }
+    }
+  }
+  
