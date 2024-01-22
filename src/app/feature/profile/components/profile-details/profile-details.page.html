@@ -12,13 +12,15 @@
   </ion-header>
   @if (user) {
   <div class="profile d-flex align-items-center">
-    <ion-img [src]="user?.profilePic" alt="Profile Photo" />
+    <ion-avatar>
+      <img [src]="user?.profilePic" alt="Profile" />
+    </ion-avatar>
     <div class="main">
       <h5>{{user.name}}</h5>
       <div class="stats d-flex justify-content-between">
         <div>
           <p>Posts</p>
-          <p>123</p>
+          <p>{{posts?.length}}</p>
         </div>
         <div>
           <p>Followers</p>
@@ -33,11 +35,11 @@
   </div>
   <div class="posts d-flex align-items-center flex-wrap">
     @for (post of posts;track $index) {
-      <ion-nav-link router-direction="forward" [routerLink]="'/post/' + post.id">
-        <ion-item-group class="post">
-          <ion-img [src]="post.postImage" alt="post" />
-        </ion-item-group>
-      </ion-nav-link>
+    <div class="post">
+      <ion-item-group class="post" (click)="gotoPost(post.id)">
+        <img [src]="post.postImage" alt="post" />
+      </ion-item-group>
+    </div>
     }
   </div>
   }

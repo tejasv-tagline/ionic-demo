@@ -1,5 +1,42 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content [fullscreen]="true">
-  <ion-content class="ion-padding">
-    <ion-nav [root]="component"></ion-nav>
-  </ion-content>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  @if (user) {
+  <div class="profile d-flex align-items-center">
+    <img [src]="user?.profilePic" alt="Profile Photo" />
+    <div class="main">
+      <h5>{{user.name}}</h5>
+      <div class="stats d-flex justify-content-between">
+        <div>
+          <p>Posts</p>
+          <p>123</p>
+        </div>
+        <div>
+          <p>Followers</p>
+          <p>43.6 k</p>
+        </div>
+        <div>
+          <p>following</p>
+          <p>546</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="posts d-flex align-items-center flex-wrap">
+    @for (post of posts;track $index) {
+    <ion-item-group class="post" (click)="gotoPost(post.id)">
+      <img [src]="post.postImage" alt="post" />
+    </ion-item-group>
+    }
+  </div>
+  }
 </ion-content>

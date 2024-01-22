@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { ProfileDetailsPage } from './components/profile-details/profile-details.page';
 import { UserService } from 'src/app/services/user.service';
 import { PostService } from 'src/app/services/post.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -17,6 +18,8 @@ export class ProfilePage {
 
   private userService = inject(UserService);
   private postService = inject(PostService);
+  private router = inject(Router);
+
 
 
   @Input() private userId!: string;
@@ -40,6 +43,9 @@ export class ProfilePage {
     }
   }
 
-  public component = ProfileDetailsPage;
+  // public component = ProfileDetailsPage;
+  public gotoPost(postId: string) {
+    this.router.navigate(['/post', postId]);
+  }
   
 }
