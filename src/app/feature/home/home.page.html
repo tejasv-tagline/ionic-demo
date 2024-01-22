@@ -12,18 +12,27 @@
       <ion-item-group *ngFor="let post of posts; let i=index">
         <ion-item-divider>
           <ion-avatar slot="start">
-            <img
-              [src]="post.postImage"
-              alt="post">
+            <img [src]="post.postImage" alt="post" />
           </ion-avatar>
-          <ion-label> <h3>{{post.userName}}</h3>  </ion-label>
-          <ion-icon name="ellipsis-vertical-outline" slot="end" [id]="'open-action-sheet' + i"></ion-icon>
+          <ion-label> <h3>{{post.userName}}</h3> </ion-label>
+          <ion-icon
+            name="ellipsis-vertical-outline"
+            slot="end"
+            [id]="'open-action-sheet' + i"
+          ></ion-icon>
         </ion-item-divider>
         <ion-img
+          class="post-img"
           [src]="post.postImage"
-          alt="post image"></ion-img>
+          alt="post image"
+        ></ion-img>
         <ion-item-divider>
-          <ion-icon [name]="post.isLike ? 'heart' : 'heart-outline'" slot="start" (click)="onLike(i)" [ngClass]="{'heart':post.isLike}"></ion-icon>
+          <ion-icon
+            [name]="post.isLike ? 'heart' : 'heart-outline'"
+            slot="start"
+            (click)="onLike(i)"
+            [ngClass]="{'heart':post.isLike}"
+          ></ion-icon>
         </ion-item-divider>
         <ion-action-sheet
           [trigger]="'open-action-sheet' + i"

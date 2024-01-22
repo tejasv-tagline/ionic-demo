@@ -1,0 +1,31 @@
+@if(post){
+<ion-item-group>
+  <ion-item-divider>
+    <ion-avatar slot="start">
+      <img [src]="post.postImage" alt="post" />
+    </ion-avatar>
+    <ion-label>
+      <h3>{{ post.userName }}</h3>
+    </ion-label>
+    <ion-icon
+      name="ellipsis-vertical-outline"
+      slot="end"
+      [id]="'open-action-sheet' + post.id"
+    ></ion-icon>
+  </ion-item-divider>
+  <ion-img class="post-img" [src]="post.postImage" alt="post image"></ion-img>
+  <ion-item-divider>
+    <ion-icon
+      [name]="post.isLike ? 'heart' : 'heart-outline'"
+      slot="start"
+      (click)="onLike(post.id)"
+      [ngClass]="{ heart: post.isLike }"
+    ></ion-icon>
+  </ion-item-divider>
+  <!-- [buttons]="actionSheetButtons" -->
+  <ion-action-sheet
+    [trigger]="'open-action-sheet' + post.id"
+  ></ion-action-sheet>
+  <!-- (didDismiss)="logResult($event,post.id)" -->
+</ion-item-group>
+}
