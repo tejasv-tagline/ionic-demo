@@ -14,9 +14,13 @@ export const routes: Routes = [
         loadComponent: () => import('./feature/search/search.page').then(m => m.SearchPage)
       },
       {
-        path: 'chat',
-        loadComponent: () => import('./feature/chat/chat.page').then(m => m.ChatPage)
+        path: 'chat-list',
+        loadComponent: () => import('./feature/chat/chat.page').then( m => m.ChatPage),
       },
+      {
+    path: 'chat-details/:id',
+    loadComponent: () => import('./feature/chat/components/chat-details/chat-details.page').then( m => m.ChatDetailsPage)
+  },
       {
         path: '',
         redirectTo: 'home',
@@ -35,5 +39,5 @@ export const routes: Routes = [
   {
     path: '**',
     redirectTo: 'login',
-  },
+  }
 ];

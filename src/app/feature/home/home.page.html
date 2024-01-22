@@ -13,28 +13,27 @@
         <ion-item-divider>
           <ion-avatar slot="start">
             <img
-              [src]="post.image"
+              [src]="post.postImage"
               alt="post">
           </ion-avatar>
-          <ion-label> <h3>{{post.name}}</h3>  </ion-label>
+          <ion-label> <h3>{{post.userName}}</h3>  </ion-label>
           <ion-icon name="ellipsis-vertical-outline" slot="end" [id]="'open-action-sheet' + i"></ion-icon>
         </ion-item-divider>
         <ion-img
-          [src]="post.image"
-          alt="The Wisconsin State Capitol building in Madison, WI at night"></ion-img>
+          [src]="post.postImage"
+          alt="post image"></ion-img>
         <ion-item-divider>
-          <ion-icon [name]="(isLiked && i === currentLike) ? 'heart' : 'heart-outline'" slot="start" (click)="onLike(i)" [ngClass]="{'heart':(isLiked && i === currentLike)}"></ion-icon>
-          <!-- <ion-icon name="heart" slot="start"></ion-icon> -->
+          <ion-icon [name]="post.isLike ? 'heart' : 'heart-outline'" slot="start" (click)="onLike(i)" [ngClass]="{'heart':post.isLike}"></ion-icon>
         </ion-item-divider>
         <ion-action-sheet
           [trigger]="'open-action-sheet' + i"
           [buttons]="actionSheetButtons"
-          (didDismiss)="logResult($event)"
+          (didDismiss)="logResult($event,post.id)"
         ></ion-action-sheet>
       </ion-item-group>
     </ion-list>
-    <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+    <!-- <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
       <ion-infinite-scroll-content loadingText="Please wait..."></ion-infinite-scroll-content>
-    </ion-infinite-scroll>
+    </ion-infinite-scroll> -->
   </ion-content>
 </div>

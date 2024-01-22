@@ -1,41 +1,37 @@
 import { IonicModule } from '@ionic/angular';
-import { Component, inject } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { InfiniteScrollCustomEvent } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { PostService } from 'src/app/services/post.service';
+import { LoaderService } from 'src/app/shared/services/loader.service';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule]
+  imports: [IonicModule, CommonModule, FormsModule]
 })
 export class HomePage {
+
+  
+
   public presentingElement: any;
   private actionSheetCtrl = inject(ActionSheetController);
   public isLiked: boolean = false;
   public currentLike!: number;
-  public posts: any = [
-    {
-      name: 'Tejas',
-      image: 'https://media.istockphoto.com/id/886636648/photo/young-man-is-taking-pictures-with-an-old-camera.jpg?s=612x612&w=0&k=20&c=xhNzBup3llLNBJjj4wU6kO8gmK8xiXIbxKX6cpveUhI='
-    },
-    {
-      name: 'Jaydeep',
-      image: 'https://media.istockphoto.com/id/1210526465/photo/young-man-photographer-taking-pictures-in-a-city.jpg?s=170667a&w=0&k=20&c=mPGTrzRd4ANz1AhYX9iV7bRzKyfMlMzkPxClXtOvPnE='
-    },
-    {
-      name: 'Dharmik',
-      image: 'https://media.istockphoto.com/id/1463682140/photo/man-takes-a-picture-with-a-camera.jpg?s=170667a&w=0&k=20&c=pvcHpEVCX_8863XyOzCHFQcF6oKzXyvCaRAvyZsKFz8='
-    },
-    {
-      name: 'Arvind Maurya',
-      image: 'https://static.vecteezy.com/system/resources/thumbnails/001/271/865/small/view-of-a-male-photographer.jpg'
-    }
-  ]
+  public posts: any = [];
+
+  constructor(
+    private postService:PostService,
+    private loaderService:LoaderService
+    ){}
 
   ngOnInit() {
+    this.getAllPosts();
     this.presentingElement = document.querySelector('.ion-page');
   }
 
@@ -76,8 +72,10 @@ export class HomePage {
   }
 
   onLike(i: number) {
-    this.currentLike = i;
-    this.isLiked = !this.isLiked;
+    // this.currentLike = i;
+    // this.isLiked = !this.isLiked;
+    this.posts[i].isLike = !this.posts[i].isLike;
+    this.posts = [...this.posts];
   }
 
   public actionSheetButtons = [
@@ -103,7 +101,7 @@ export class HomePage {
     },
   ];
 
-  logResult(ev: any) {
+  logResult(ev: any,postId:string) {
     const eventVal = ev.detail.data && ev.detail.data.action;
     if(eventVal === 'share'){
       navigator.share({
@@ -114,8 +112,51 @@ export class HomePage {
       .catch((error) => console.log('Error sharing', error));
     } else if(eventVal === 'delete'){
       console.log('Deleted');
+      // const index = this.posts.findIndex((post:any)=> post.id === postId);
+      // this.posts.splice(index,1);
+      this.deletePost(postId);
     } else {
       console.log('Cancle');
     }
   }
+
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      buttons: [
+        {
+          text: 'Share',
+          data: {
+            action: 'share',
+          },
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          data: {
+            action: 'cancel',
+          },
+        },
+      ],
+    });
+
+    await actionSheet.present();
+  }
+
+  //Manage posts section start
+
+  private getAllPosts(): void {
+    this.loaderService.showLoading('Posts Loading!');
+    this.postService.getPosts().subscribe((data) => {
+      this.posts = data.map((e) => {
+        return Object.assign({ id: e.payload.doc.id }, e.payload.doc.data());
+      });
+      this.loaderService.hideLoading();
+    });
+  }
+
+  deletePost(postId:string){
+    this.postService.deletePost(postId);
+  }
+  //Manage posts section end
+
 }

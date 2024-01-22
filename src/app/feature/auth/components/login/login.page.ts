@@ -37,6 +37,7 @@ export class LoginPage {
         if (result) {
           this.authService.getUserByUid(result.user.uid).subscribe((userData) => {
             this.user = userData;
+            localStorage.setItem('userDetails',JSON.stringify(userData));
             this.router.navigate(['/home']);
           });
         }

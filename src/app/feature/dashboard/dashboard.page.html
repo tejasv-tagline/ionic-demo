@@ -13,11 +13,11 @@
       <ion-icon name="search-outline"></ion-icon>
       Search
     </ion-tab-button>
-    <ion-tab-button (click)="opneModel()">
+    <ion-tab-button id="open-modal" expand="block">
       <ion-icon name="add-circle-outline"></ion-icon>
       Add Post
     </ion-tab-button>
-    <ion-tab-button tab="chat">
+    <ion-tab-button tab="chat-list">
       <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
       Chat
     </ion-tab-button>
@@ -27,3 +27,51 @@
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>
+
+<ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel()">Cancel</ion-button>
+        </ion-buttons>
+        <!-- <ion-title>Welcome</ion-title> -->
+        <ion-buttons slot="end">
+          <ion-button (click)="confirm()" [strong]="true" [disabled]="!imageUrl">Post</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <form [formGroup]="postForm">
+        @if(!imageUrl){
+        <div class="post-input">
+          <ion-input type="file" formControlName="postImage" accept=".png, .jpg, .jpeg" #fileInput
+            (change)="uploadFile($event)"></ion-input>
+        </div>
+        } @else {
+        <div class="image-preview">
+          <ion-img [src]="imageUrl" alt="post image"></ion-img>
+        </div>
+        }
+        <ion-textarea placeholder="Type something here" formControlName="content"></ion-textarea>
+      </form>
+      <!-- <ion-content *ngIf="!photoService.photos.length">
+        <ion-fab vertical="top" horizontal="center" slot="fixed">
+          <ion-fab-button (click)="addPhotoToGallery()">
+            <ion-icon name="camera"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+      </ion-content> -->
+      <!-- <ion-grid>
+        <ion-row>
+          <ion-col size="12" *ngFor="let photo of photoService.photos; index as position">
+            <ion-img [src]="photo.webviewPath"></ion-img>
+          </ion-col>
+        </ion-row>
+        <ion-textarea placeholder="Type something here" [(ngModel)]="name"></ion-textarea>
+      </ion-grid> -->
+    </ion-content>
+  </ng-template>
+</ion-modal>
+<ion-toast [isOpen]="isToastOpen" message="Post successfully!" [duration]="5000" position="top"
+  (didDismiss)="setOpen(false)"></ion-toast>
