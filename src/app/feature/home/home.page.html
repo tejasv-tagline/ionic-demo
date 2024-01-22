@@ -9,7 +9,10 @@
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     <ion-list>
-      <ion-item-group *ngFor="let post of posts; let i=index">
+      @for (post of posts;track $index) {
+        <app-post-ui [post]="post" />
+      }
+      <!-- <ion-item-group *ngFor="let post of posts; let i=index">
         <ion-item-divider>
           <ion-avatar slot="start">
             <img [src]="post.postImage" alt="post" />
@@ -39,7 +42,7 @@
           [buttons]="actionSheetButtons"
           (didDismiss)="logResult($event,post.id)"
         ></ion-action-sheet>
-      </ion-item-group>
+      </ion-item-group> -->
     </ion-list>
     <!-- <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
       <ion-infinite-scroll-content loadingText="Please wait..."></ion-infinite-scroll-content>

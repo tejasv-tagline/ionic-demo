@@ -6,6 +6,7 @@ import { InfiniteScrollCustomEvent } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { PostService } from 'src/app/services/post.service';
 import { LoaderService } from 'src/app/shared/services/loader.service';
+import { PostUiComponent } from 'src/app/shared/components/post-ui/post-ui.component';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { LoaderService } from 'src/app/shared/services/loader.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule,PostUiComponent]
 })
 export class HomePage {
 
