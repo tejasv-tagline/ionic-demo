@@ -16,11 +16,17 @@
   <ion-img class="post-img" [src]="post.postImage" alt="post image"></ion-img>
   <ion-item-divider>
     <ion-icon
-      [name]="post.isLike ? 'heart' : 'heart-outline'"
+      [name]="post.isLiked ? 'heart' : 'heart-outline'"
       slot="start"
       (click)="onLike(post.id)"
-      [ngClass]="{ heart: post.isLike }"
+      [ngClass]="{ heart: post.isLiked }"
     ></ion-icon>
+    @if(post.likes?.length){
+    <ion-text class="ms-2"
+      >{{ post.isLiked ? "You" : post.likes && post.likes[0]?.userName }}
+      @if(post.likes.length >1){ and
+      {{ post.likes?.length - 1 }} Others } </ion-text
+    >}
   </ion-item-divider>
   <ion-text>Test</ion-text>
   <!-- [buttons]="actionSheetButtons" -->

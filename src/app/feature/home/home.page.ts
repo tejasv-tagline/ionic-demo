@@ -9,18 +9,15 @@ import { LoaderService } from 'src/app/shared/services/loader.service';
 import { PostUiComponent } from 'src/app/shared/components/post-ui/post-ui.component';
 import { LocalstorageService } from 'src/app/shared/services/localstorage.service';
 
-
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule,PostUiComponent]
+  imports: [IonicModule, CommonModule, FormsModule, PostUiComponent],
 })
 export class HomePage {
-
   private localstorageService = inject(LocalstorageService);
-  
 
   public presentingElement: any;
   private actionSheetCtrl = inject(ActionSheetController);
@@ -29,9 +26,9 @@ export class HomePage {
   public posts: any = [];
 
   constructor(
-    private postService:PostService,
-    private loaderService:LoaderService,
-    ){}
+    private postService: PostService,
+    private loaderService: LoaderService
+  ) {}
 
   ngOnInit() {
     this.getAllPosts();
@@ -74,19 +71,19 @@ export class HomePage {
     }, 2000);
   }
 
-  onLike(i:number,postId:string) {
-    this.posts[i].isLike = !this.posts[i].isLike;
-    this.posts = [...this.posts];
-    const userDetails = this.localstorageService.getItem('userDetails');
-    
-    const likedDetails = {
-      userId:userDetails.id,
-      userName: userDetails.name
-    };
-    this.postService.addLike(postId,likedDetails).then((res:any)=>{
-      console.log('res :>> ', res);
-    });
-  }
+  // onLike(i: number, postId: string) {
+  //   this.posts[i].isLike = !this.posts[i].isLike;
+  //   this.posts = [...this.posts];
+  //   const userDetails = this.localstorageService.getItem('userDetails');
+
+  //   const likedDetails = {
+  //     userId: userDetails.id,
+  //     userName: userDetails.name,
+  //   };
+  //   this.postService.addLike(postId, likedDetails).then((res: any) => {
+  //     console.log('res :>> ', res);
+  //   });
+  // }
 
   public actionSheetButtons = [
     {
@@ -104,16 +101,18 @@ export class HomePage {
     },
   ];
 
-  logResult(ev: any,postId:string) {
+  logResult(ev: any, postId: string) {
     const eventVal = ev.detail.data && ev.detail.data.action;
-    if(eventVal === 'share'){
-      navigator.share({
-        text: 'Kuch Bhi',
-        title: 'Me hu title',
-        url: 'title.com'
-      }).then(() => console.log('Successful share'))
-      .catch((error) => console.log('Error sharing', error));
-    } else if(eventVal === 'delete'){
+    if (eventVal === 'share') {
+      navigator
+        .share({
+          text: 'Kuch Bhi',
+          title: 'Me hu title',
+          url: 'title.com',
+        })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error));
+    } else if (eventVal === 'delete') {
       console.log('Deleted');
       this.deletePost(postId);
     } else {
@@ -177,11 +176,12 @@ export class HomePage {
       this.posts = data.map((e) => {
         return Object.assign({ id: e.payload.doc.id }, e.payload.doc.data());
       });
+      console.log('this.posts :>> ', this.posts);
       this.loaderService.hideLoading();
     });
   }
 
-  private deletePost(postId:string){
+  private deletePost(postId: string) {
     this.postService.deletePost(postId);
   }
 
@@ -191,5 +191,4 @@ export class HomePage {
   //   })
   // }
   //Manage posts section end
-
 }

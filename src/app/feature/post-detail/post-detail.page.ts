@@ -21,9 +21,7 @@ export class PostDetailPage implements OnInit {
 
   ngOnInit() {
     this.postService.getPost(this.postId).subscribe((res) => {
-      console.log('res.payload.data() :>> ', res.payload.data());
-      this.post = res.payload.data();
-      console.log('this.post :>> ', this.post);
+      this.post = Object.assign({ id: res.payload.id }, res.payload.data());
     });
   }
 }

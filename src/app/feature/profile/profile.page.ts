@@ -36,6 +36,7 @@ export class ProfilePage {
           return { ...e.data(), id: e.id };
         });
         console.log('this.posts :>> ', this.posts);
+        console.log('this.posts :>> ', this.posts);
       });
     }
   }
