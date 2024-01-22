@@ -36,4 +36,21 @@ export class PostService {
       )
       .get();
   }
+
+  public getPostById(postId:string){
+    return this.firestore.collection(TABLES.POSTS).doc(postId).snapshotChanges();
+  }
+
+  public updatePost(postId:string,updateValue:any){
+    return this.firestore.collection(TABLES.POSTS).doc(postId).update(updateValue);
+  }
+
+  public addLike(postId:string,data:any){
+    return this.firestore.collection(TABLES.POSTS).doc(postId).collection(TABLES.LIKES).doc(data.userId).set(data);
+  }
+
+  public removeLike(postId:string,userId:string){
+    return this.firestore.collection(TABLES.POSTS).doc(postId).collection(TABLES.LIKES).doc(userId).delete();
+  }
+
 }

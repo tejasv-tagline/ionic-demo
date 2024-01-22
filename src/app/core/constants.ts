@@ -1,4 +1,5 @@
 export const TABLES = {
     USERS: 'users',
-    POSTS:'posts'
+    POSTS:'posts',
+    LIKES:'likes'
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -15,6 +15,7 @@ import { finalize } from 'rxjs';
 import { PhotoService } from 'src/app/services/photo.service';
 import { PostService } from 'src/app/services/post.service';
 import { Router } from '@angular/router';
+import { LocalstorageService } from 'src/app/shared/services/localstorage.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,6 +26,9 @@ import { Router } from '@angular/router';
 })
 export class DashboardPage implements OnInit {
   public user = JSON.parse(localStorage.getItem('userDetails') || '');
+
+  private localstorageService = inject(LocalstorageService);
+
 
   @ViewChild(IonModal) modal!: IonModal;
   isToastOpen = false;
@@ -73,7 +77,8 @@ export class DashboardPage implements OnInit {
 
   onWillDismiss(event: Event) {
     const ev = event as CustomEvent<OverlayEventDetail<string>>;
-    const userDetails = JSON.parse(localStorage.getItem('userDetails') || '');
+    // const userDetails = JSON.parse(localStorage.getItem('userDetails') || '');
+    const userDetails = this.localstorageService.getItem('userDetails');
     if (ev.detail.role === 'confirm') {
       this.uploadPost(this.uploadFileObj, userDetails);
       // const data = {

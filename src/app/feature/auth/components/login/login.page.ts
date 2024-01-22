@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { IonicModule } from '@ionic/angular';
 import { AuthService } from '../../service/auth.service';
 import { Router, RouterModule } from '@angular/router';
+import { LocalstorageService } from 'src/app/shared/services/localstorage.service';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ import { Router, RouterModule } from '@angular/router';
 export class LoginPage {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  private localstorageService = inject(LocalstorageService);
   private router = inject(Router);
   loginForm!: FormGroup;
   user: any;
@@ -37,7 +39,7 @@ export class LoginPage {
         if (result) {
           this.authService.getUserByUid(result.user.uid).subscribe((userData) => {
             this.user = userData;
-            localStorage.setItem('userDetails',JSON.stringify(userData));
+            this.localstorageService.setItem('userDetails',userData);
             this.router.navigate(['/home']);
           });
         }

@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { PostService } from 'src/app/services/post.service';
 import { LoaderService } from 'src/app/shared/services/loader.service';
 import { PostUiComponent } from 'src/app/shared/components/post-ui/post-ui.component';
+import { LocalstorageService } from 'src/app/shared/services/localstorage.service';
 
 
 @Component({
@@ -18,6 +19,7 @@ import { PostUiComponent } from 'src/app/shared/components/post-ui/post-ui.compo
 })
 export class HomePage {
 
+  private localstorageService = inject(LocalstorageService);
   
 
   public presentingElement: any;
@@ -28,7 +30,7 @@ export class HomePage {
 
   constructor(
     private postService:PostService,
-    private loaderService:LoaderService
+    private loaderService:LoaderService,
     ){}
 
   ngOnInit() {
@@ -72,21 +74,21 @@ export class HomePage {
     }, 2000);
   }
 
-  onLike(i: number) {
-    // this.currentLike = i;
-    // this.isLiked = !this.isLiked;
+  onLike(i:number,postId:string) {
     this.posts[i].isLike = !this.posts[i].isLike;
     this.posts = [...this.posts];
+    const userDetails = this.localstorageService.getItem('userDetails');
+    
+    const likedDetails = {
+      userId:userDetails.id,
+      userName: userDetails.name
+    };
+    this.postService.addLike(postId,likedDetails).then((res:any)=>{
+      console.log('res :>> ', res);
+    });
   }
 
   public actionSheetButtons = [
-    {
-      text: 'Delete',
-      role: 'destructive',
-      data: {
-        action: 'delete',
-      },
-    },
     {
       text: 'Share',
       data: {
@@ -113,35 +115,59 @@ export class HomePage {
       .catch((error) => console.log('Error sharing', error));
     } else if(eventVal === 'delete'){
       console.log('Deleted');
-      // const index = this.posts.findIndex((post:any)=> post.id === postId);
-      // this.posts.splice(index,1);
       this.deletePost(postId);
     } else {
       console.log('Cancle');
     }
   }
 
-  async presentActionSheet() {
-    const actionSheet = await this.actionSheetCtrl.create({
-      buttons: [
-        {
-          text: 'Share',
-          data: {
-            action: 'share',
-          },
-        },
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          data: {
-            action: 'cancel',
-          },
-        },
-      ],
-    });
+  // private getPostById(postId:string){
+  //   this.postService.getPostById(postId).subscribe((post:any)=>{
+  //     return post.payload.data();
+  //   });
+  // }
 
-    await actionSheet.present();
-  }
+  // public async presentActionSheet(postId:string) {
+  //   console.log('postId :>> ', postId);
+  //   const currentPostDetails = await this.getPostById(postId);
+  //   console.log('currentPostDetails :>> ', currentPostDetails);
+  //   const actionSheet = await this.actionSheetCtrl.create({
+  //     buttons: [
+  //       {
+  //         text: 'Share',
+  //         data: {
+  //           action: 'share',
+  //         },
+  //       },
+  //       {
+  //         text: 'Cancel',
+  //         role: 'cancel',
+  //         data: {
+  //           action: 'cancel',
+  //         },
+  //       },
+  //     ],
+  //   });
+
+  //   await actionSheet.present();
+  //   await actionSheet.onDidDismiss().then((event:any)=>{
+  //     console.log('event :>> ', event);
+  //     const eventVal = event.data && event.data.action;
+  //     if(eventVal === 'share'){
+  //       navigator.share({
+  //         text: 'Kuch Bhi',
+  //         title: 'Me hu title',
+  //         url: 'title.com'
+  //       }).then(() => console.log('Successful share'))
+  //       .catch((error) => console.log('Error sharing', error));
+  //     } else if(eventVal === 'delete'){
+  //       console.log('Deleted');
+  //       this.deletePost(postId);
+  //     } else {
+  //       console.log('Cancle');
+  //     }
+  //   })
+  // }
 
   //Manage posts section start
 
@@ -155,9 +181,15 @@ export class HomePage {
     });
   }
 
-  deletePost(postId:string){
+  private deletePost(postId:string){
     this.postService.deletePost(postId);
   }
+
+  // private updatePost(postId:string){
+  //   this.postService.updatePost(postId,).then((update:any)=>{
+  //     console.log('update :>> ', update);
+  //   })
+  // }
   //Manage posts section end
 
 }
