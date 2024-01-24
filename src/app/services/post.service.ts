@@ -45,19 +45,19 @@ export class PostService {
       .get();
   }
 
-  public getPostById(postId: string) {
-    return this.firestore
-      .collection(TABLES.POSTS)
-      .doc(postId)
-      .snapshotChanges();
-  }
+  // public getPostById(postId: string) {
+  //   return this.firestore
+  //     .collection(TABLES.POSTS)
+  //     .doc(postId)
+  //     .snapshotChanges();
+  // }
 
-  public updatePost(postId: string, updateValue: any) {
-    return this.firestore
-      .collection(TABLES.POSTS)
-      .doc(postId)
-      .update(updateValue);
-  }
+  // public updatePost(postId: string, updateValue: any) {
+  //   return this.firestore
+  //     .collection(TABLES.POSTS)
+  //     .doc(postId)
+  //     .update(updateValue);
+  // }
 
   public addLike(postId: string, data: any) {
     return this.firestore

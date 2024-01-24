@@ -85,40 +85,40 @@ export class HomePage {
   //   });
   // }
 
-  public actionSheetButtons = [
-    {
-      text: 'Share',
-      data: {
-        action: 'share',
-      },
-    },
-    {
-      text: 'Cancel',
-      role: 'cancel',
-      data: {
-        action: 'cancel',
-      },
-    },
-  ];
+  // public actionSheetButtons = [
+  //   {
+  //     text: 'Share',
+  //     data: {
+  //       action: 'share',
+  //     },
+  //   },
+  //   {
+  //     text: 'Cancel',
+  //     role: 'cancel',
+  //     data: {
+  //       action: 'cancel',
+  //     },
+  //   },
+  // ];
 
-  logResult(ev: any, postId: string) {
-    const eventVal = ev.detail.data && ev.detail.data.action;
-    if (eventVal === 'share') {
-      navigator
-        .share({
-          text: 'Kuch Bhi',
-          title: 'Me hu title',
-          url: 'title.com',
-        })
-        .then(() => console.log('Successful share'))
-        .catch((error) => console.log('Error sharing', error));
-    } else if (eventVal === 'delete') {
-      console.log('Deleted');
-      this.deletePost(postId);
-    } else {
-      console.log('Cancle');
-    }
-  }
+  // logResult(ev: any, postId: string) {
+  //   const eventVal = ev.detail.data && ev.detail.data.action;
+  //   if (eventVal === 'share') {
+  //     navigator
+  //       .share({
+  //         text: 'Kuch Bhi',
+  //         title: 'Me hu title',
+  //         url: 'title.com',
+  //       })
+  //       .then(() => console.log('Successful share'))
+  //       .catch((error) => console.log('Error sharing', error));
+  //   } else if (eventVal === 'delete') {
+  //     console.log('Deleted');
+  //     this.deletePost(postId);
+  //   } else {
+  //     console.log('Cancle');
+  //   }
+  // }
 
   // private getPostById(postId:string){
   //   this.postService.getPostById(postId).subscribe((post:any)=>{
@@ -172,18 +172,22 @@ export class HomePage {
 
   private getAllPosts(): void {
     this.loaderService.showLoading('Posts Loading!');
-    this.postService.getPosts().subscribe((data) => {
-      this.posts = data.map((e) => {
-        return Object.assign({ id: e.payload.doc.id }, e.payload.doc.data());
-      });
-      console.log('this.posts :>> ', this.posts);
-      this.loaderService.hideLoading();
+    this.postService.getPosts().subscribe({
+      next: (data) => {
+        this.posts = data.map((e) => {
+          return Object.assign({ id: e.payload.doc.id }, e.payload.doc.data());
+        });
+        this.loaderService.hideLoading();
+      },
+      error:(err:any)=>{
+        this.loaderService.hideLoading();
+      }
     });
   }
 
-  private deletePost(postId: string) {
-    this.postService.deletePost(postId);
-  }
+  // private deletePost(postId: string) {
+  //   this.postService.deletePost(postId);
+  // }
 
   // private updatePost(postId:string){
   //   this.postService.updatePost(postId,).then((update:any)=>{

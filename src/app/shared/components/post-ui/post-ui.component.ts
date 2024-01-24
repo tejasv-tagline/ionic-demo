@@ -18,10 +18,47 @@ export class PostUiComponent {
   private toastController = inject(ToastController);
 
   @Input() post: any = {};
+  public actionSheetButtons: any = [
+    {
+      text: 'Delete',
+      role: 'destructive',
+      data: {
+        action: 'delete',
+      },
+    },
+    {
+      text: 'Share',
+      data: {
+        action: 'share',
+      },
+    },
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      },
+    },
+  ];
+  public defaultActionSheetButtons = [
+    {
+      text: 'Share',
+      data: {
+        action: 'share',
+      },
+    },
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      },
+    },
+  ];
 
   public user: any = this.localstorageService.getItem('userDetails');
 
-  constructor() {}
+  constructor() { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['post'].currentValue) {
@@ -34,6 +71,18 @@ export class PostUiComponent {
           (like: any) => like.userId === this.user.id
         );
         this.post.isLiked = liked?.userId === this.user.id;
+        //   this.post.actionButtons = this.post?.userId === this.user.id
+        //     ? [
+        //       {
+        //         text: 'Delete',
+        //         role: 'destructive',
+        //         data: {
+        //           action: 'delete',
+        //         },
+        //       },
+        //       ...this.defaultActionSheetButtons,
+        //     ]
+        //     : this.defaultActionSheetButtons;
       });
     }
   }
@@ -48,7 +97,7 @@ export class PostUiComponent {
     if (!this.post.isLiked) {
       this.postService
         .removeLike(this.post.id, this.user.id)
-        .then(() => {})
+        .then(() => { })
         .catch(async (e: any) => {
           const toast = await this.toastController.create({
             message: 'Somthing went wrong!',
@@ -60,7 +109,7 @@ export class PostUiComponent {
     } else {
       this.postService
         .addLike(this.post.id, likedDetails)
-        .then(() => {})
+        .then(() => { })
         .catch(async (e: any) => {
           const toast = await this.toastController.create({
             message: 'Somthing went wrong!',
@@ -70,5 +119,28 @@ export class PostUiComponent {
           await toast.present();
         });
     }
+  }
+
+  logResult(ev: any, postId: string) {
+    const eventVal = ev.detail.data && ev.detail.data.action;
+    if (eventVal === 'share') {
+      console.log('navigator :>> ', navigator);
+      navigator
+        .share({
+          text: 'Kuch Bhi',
+          title: 'Me hu title',
+          url: 'title.com',
+        })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error));
+    } else if (eventVal === 'delete') {
+      console.log('Deleted');
+      this.deletePost(postId);
+    } else {
+      console.log('Cancle');
+    }
+  }
+  private deletePost(postId: string) {
+    this.postService.deletePost(postId);
   }
 }

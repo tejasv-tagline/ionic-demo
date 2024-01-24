@@ -7,5 +7,11 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-  <p>Result loading...</p>
+  <div class="posts d-flex align-items-center flex-wrap">
+    @for (post of posts;track $index) {
+    <ion-item-group class="post" (click)="gotoPost(post.id)">
+      <img [src]="post.postImage" alt="post" />
+    </ion-item-group>
+    }
+  </div>
 </ion-content>

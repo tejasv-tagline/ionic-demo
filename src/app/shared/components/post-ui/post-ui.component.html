@@ -7,36 +7,23 @@
     <ion-label>
       <h3>{{ post.userName }}</h3>
     </ion-label>
-    <!-- <ion-icon
-      name="ellipsis-vertical-outline"
-      slot="end"
-      [id]="'open-action-sheet' + post.id"
-    ></ion-icon> -->
+    <ion-icon name="ellipsis-vertical-outline" slot="end" [id]="'open-action-sheet' + post.id"></ion-icon>
   </ion-item-divider>
   <ion-img class="post-img" [src]="post.postImage" alt="post image"></ion-img>
   <ion-item-divider>
-    <ion-icon
-      [name]="post.isLiked ? 'heart' : 'heart-outline'"
-      slot="start"
-      (click)="onLike(post.id)"
-      [ngClass]="{ heart: post.isLiked }"
-    ></ion-icon>
+    <ion-icon [name]="post.isLiked ? 'heart' : 'heart-outline'" slot="start" (click)="onLike(post.id)"
+      [ngClass]="{ heart: post.isLiked }"></ion-icon>
     @if(post.likes?.length){
-    <ion-text class="ms-2"
-      >{{ post.isLiked ? "You" : post.likes && post.likes[0]?.userName }}
+    <ion-text class="ms-2">{{ post.isLiked ? "You" : post.likes && post.likes[0]?.userName }}
       @if(post.likes.length >1){ and
-      {{ post.likes?.length - 1 }} Others } </ion-text
-    >}
+      {{ post.likes?.length - 1 }} Others } </ion-text>}
   </ion-item-divider>
   @if(post.postMessage){
-    <ion-item-divider class="content-divider">
-      <ion-text>{{post.postMessage}}</ion-text>
-    </ion-item-divider>
+  <ion-item-divider class="content-divider">
+    <ion-text>{{post.postMessage}}</ion-text>
+  </ion-item-divider>
   }
-  <!-- [buttons]="actionSheetButtons" -->
-  <ion-action-sheet
-    [trigger]="'open-action-sheet' + post.id"
-  ></ion-action-sheet>
-  <!-- (didDismiss)="logResult($event,post.id)" -->
+  <ion-action-sheet [buttons]="post?.userId === user.id ? actionSheetButtons:defaultActionSheetButtons"
+    [trigger]="'open-action-sheet' + post.id" (didDismiss)="logResult($event,post.id)"></ion-action-sheet>
 </ion-item-group>
 }
