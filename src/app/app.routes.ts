@@ -24,16 +24,16 @@ export const routes: Routes = [
           import('./feature/chat/chat.page').then((m) => m.ChatPage),
       },
       {
+        path: 'profile',
+        loadComponent: () =>
+          import('./feature/profile/profile.page').then((m) => m.ProfilePage),
+      },
+      {
         path: 'chat-details/:id',
         loadComponent: () =>
           import(
             './feature/chat/components/chat-details/chat-details.page'
           ).then((m) => m.ChatDetailsPage),
-      },
-      {
-        path: 'profile/:userId',
-        loadComponent: () =>
-          import('./feature/profile/profile.page').then((m) => m.ProfilePage),
       },
       {
         path: 'post/:postId',

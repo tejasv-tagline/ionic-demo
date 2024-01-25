@@ -76,4 +76,12 @@ export class PostService {
       .doc(userId)
       .delete();
   }
+
+  // public getPostByUserName(userName: string) {
+  //   return this.firestore
+  //     .collection(TABLES.POSTS, (ref) =>
+  //       ref.where('userName', '==', userName)
+  //     )
+  //     .get();
+  // }
 }

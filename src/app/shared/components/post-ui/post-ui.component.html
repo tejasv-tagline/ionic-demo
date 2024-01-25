@@ -23,7 +23,7 @@
     <ion-text>{{post.postMessage}}</ion-text>
   </ion-item-divider>
   }
-  <ion-action-sheet [buttons]="post?.userId === user.id ? actionSheetButtons:defaultActionSheetButtons"
-    [trigger]="'open-action-sheet' + post.id" (didDismiss)="logResult($event,post.id)"></ion-action-sheet>
+  <ion-action-sheet [buttons]="post.userId === user.id ? actionSheetButtons:defaultActionSheetButtons"
+    [trigger]="'open-action-sheet' + post.id" (didDismiss)="logResult($event,post)"></ion-action-sheet>
 </ion-item-group>
 }

@@ -21,6 +21,7 @@ export class SearchPage implements OnInit {
 
 
   public posts: any = [];
+  public tempPosts:any = [];
   constructor() { }
 
   ngOnInit() {
@@ -30,7 +31,15 @@ export class SearchPage implements OnInit {
 
   handleInput(event:any) {
     const query = event.target.value.toLowerCase();
-    console.log('query :>> ', query);
+    // this.postService.getPostByUserName(query).subscribe((post:any)=>{
+    //   const posts = post.docs.map((e: any) => {
+    //     return { ...e.data(), id: e.id };
+    //   });
+    //   console.log('this.posts :>> ', posts);
+    // })
+    this.posts = this.tempPosts.filter((post:any) => {
+      return post.userName.toLowerCase().includes(query)
+    });
   }
 
   private getAllPosts(): void {
@@ -40,6 +49,7 @@ export class SearchPage implements OnInit {
         this.posts = data.map((e) => {
           return Object.assign({ id: e.payload.doc.id }, e.payload.doc.data());
         });
+        this.tempPosts = this.posts;
         this.loaderService.hideLoading();
       },
       error:(err:any)=>{
@@ -49,7 +59,7 @@ export class SearchPage implements OnInit {
   }
 
   public gotoPost(postId: string) {
-    this.router.navigate(['/post', postId]);
+    this.router.navigate(['/post', postId],{queryParams:{backPage:`/search`}});
   }
 
 }

@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { LocalstorageService } from '../../services/localstorage.service';
 import { PostService } from 'src/app/services/post.service';
 import { ToastController } from '@ionic/angular';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-post-ui',
@@ -16,6 +18,9 @@ export class PostUiComponent {
   private localstorageService = inject(LocalstorageService);
   private postService = inject(PostService);
   private toastController = inject(ToastController);
+  private alertController = inject(AlertController);
+  private fireStorage = inject(AngularFireStorage);
+
 
   @Input() post: any = {};
   public actionSheetButtons: any = [
@@ -121,7 +126,7 @@ export class PostUiComponent {
     }
   }
 
-  logResult(ev: any, postId: string) {
+  logResult(ev: any, post: any) {
     const eventVal = ev.detail.data && ev.detail.data.action;
     if (eventVal === 'share') {
       console.log('navigator :>> ', navigator);
@@ -135,12 +140,36 @@ export class PostUiComponent {
         .catch((error) => console.log('Error sharing', error));
     } else if (eventVal === 'delete') {
       console.log('Deleted');
-      this.deletePost(postId);
+      // this.deletePost(post);
+      this.confirmDelete(post);
     } else {
       console.log('Cancle');
     }
   }
-  private deletePost(postId: string) {
-    this.postService.deletePost(postId);
+
+  private async confirmDelete(post:any){
+    const alert = await this.alertController.create({
+      header: 'Are you sure!',
+      message: 'You want to delete this post.',
+      buttons: [{
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => {
+          console.log('Alert canceled');
+        },
+      },
+      {
+        text: 'Delete',
+        role: 'confirm',
+        handler: () => {
+          this.deletePost(post);
+        },
+      },]
+    });
+    await alert.present();
+  }
+  private deletePost(post: any) {
+    this.postService.deletePost(post.id);
+    this.fireStorage.storage.refFromURL(post.postImage).delete();
   }
 }

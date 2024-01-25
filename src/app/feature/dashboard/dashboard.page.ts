@@ -29,6 +29,11 @@ export class DashboardPage implements OnInit {
   public user = this.localStorage.getItem('userDetails');
 
   private localstorageService = inject(LocalstorageService);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private photoService = inject(PhotoService);
+  private postService = inject(PostService);
+  private storage = inject(AngularFireStorage);
 
   @ViewChild(IonModal) modal!: IonModal;
   isToastOpen = false;
@@ -41,13 +46,7 @@ export class DashboardPage implements OnInit {
   uploadFileObj: any;
   downloadURL: any;
 
-  constructor(
-    public photoService: PhotoService,
-    private postService: PostService,
-    private storage: AngularFireStorage,
-    private fb: FormBuilder,
-    private router: Router
-  ) {
+  constructor() {
     this.createPostForm();
   }
 
@@ -103,7 +102,6 @@ export class DashboardPage implements OnInit {
               postMessage: this.postForm.value.content,
             };
             this.postService.addPost(data).then((res: any) => {
-              console.log('res :>> ', res);
               this.isToastOpen = true;
               this.clearImageonCancel();
             });
