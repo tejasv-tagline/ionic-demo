@@ -6,6 +6,8 @@ import { UserService } from 'src/app/services/user.service';
 import { PostService } from 'src/app/services/post.service';
 import { Router } from '@angular/router';
 import { LocalstorageService } from 'src/app/shared/services/localstorage.service';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -20,6 +22,7 @@ export class ProfilePage {
   private localstorageService = inject(LocalstorageService);
   private postService = inject(PostService);
   private router = inject(Router);
+  private storage = inject(AngularFireStorage);
 
 
 
@@ -27,17 +30,18 @@ export class ProfilePage {
   private userId:any;
   public user: any;
   public posts: any;
+  public isLoader:boolean = false;
 
   constructor() {}
 
   ngOnInit() {
-    this.userId = this.localstorageService.getItem('userDetails');
+    this.userId = this.localstorageService.getItem('userDetails').id;
     if (this.userId) {
-      this.userService.getUserProfile(this.userId.id).subscribe((res) => {
+      this.userService.getUserProfile(this.userId).subscribe((res) => {
         this.user = res.payload.data();
       });
 
-      this.postService.getPostByUserId(this.userId.id).subscribe((res) => {
+      this.postService.getPostByUserId(this.userId).subscribe((res) => {
         this.posts = res.docs.map((e: any) => {
           return { ...e.data(), id: e.id };
         });
@@ -49,5 +53,38 @@ export class ProfilePage {
   public gotoPost(postId: string) {
     this.router.navigate(['/post', postId],{queryParams:{backPage:`/profile`}});
   }
+
+  uploadProfile(event: any) {
+    const filePath = `usersProfile/${event.name}`;
+    const fileRef = this.storage.ref(filePath);
+    const task = this.storage.upload(filePath, event);
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((downloadURL) => {
+            this.user.profilePic = downloadURL;
+            const data = {
+              ...this.user
+            };
+            this.userService.updateUser(this.userId,data).then((res: any) => {
+              this.isLoader = false;
+            });
+          });
+        })
+      )
+      .subscribe();
+  }
   
+  onSelectFile(event:any) {
+    if (event.target.files && event.target.files[0]) {
+      // var reader = new FileReader();
+      this.isLoader = true;
+      // reader.readAsDataURL(event.target.files[0]); // read file as data url
+      if(this.user.profilePic){
+        this.storage.storage.refFromURL(this.user.profilePic).delete();
+      }
+      this.uploadProfile(event.target.files[0]);
+    }
+  }
 }

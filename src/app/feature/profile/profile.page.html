@@ -12,7 +12,18 @@
   </ion-header>
   @if (user) {
   <div class="profile d-flex align-items-center">
-    <img [src]="user?.profilePic" alt="Profile Photo" />
+    <label class="hoverable" for="fileInput">
+      <img [src]="user?.profilePic || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+    </label>
+    <br />
+    <input id="fileInput" type="file" class="select-profile-picture"
+      (change)="onSelectFile($event)" />
+      @if(isLoader){
+        <ion-spinner></ion-spinner>
+      }
+    <!-- <ion-avatar>
+      <img [src]="user?.profilePic || 'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="Profile Photo" />
+    </ion-avatar> -->
     <div class="main">
       <h5>{{user.name}}</h5>
       <div class="stats d-flex justify-content-between">

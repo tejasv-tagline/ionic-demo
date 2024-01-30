@@ -16,4 +16,11 @@ export class UserService {
       .snapshotChanges();
   }
 
+  public updateUser(userId: string, updateValue: any) {
+    return this.firestore
+      .collection(TABLES.USERS)
+      .doc(userId)
+      .update(updateValue);
+  }
+
 }
