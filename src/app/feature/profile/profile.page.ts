@@ -31,6 +31,23 @@ export class ProfilePage {
   public user: any;
   public posts: any;
   public isLoader:boolean = false;
+  isActionSheetOpen = false;
+  public actionSheetButtons = [
+    {
+      text: 'Logout',
+      role: 'destructive',
+      data: {
+        action: 'logout',
+      },
+    },
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      },
+    },
+  ];
 
   constructor() {}
 
@@ -85,6 +102,14 @@ export class ProfilePage {
         this.storage.storage.refFromURL(this.user.profilePic).delete();
       }
       this.uploadProfile(event.target.files[0]);
+    }
+  }
+
+  logResult(ev:any) {
+    const eventVal = ev.detail.data && ev.detail.data.action;
+    if(eventVal === 'logout') {
+      this.localstorageService.clearLocalStorage();
+      this.router.navigate(['/login']);
     }
   }
 }

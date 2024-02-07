@@ -1,35 +1,27 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
+  <ion-toolbar class="px-2">
+    <ion-title>Profile</ion-title>
+    <ion-icon name="ellipsis-vertical-outline" slot="end" id="open-action-sheet"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
   @if (user) {
   <div class="profile d-flex align-items-center">
     <label class="hoverable" for="fileInput">
       <img [src]="user?.profilePic || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
     </label>
     <br />
-    <input id="fileInput" type="file" class="select-profile-picture"
-      (change)="onSelectFile($event)" />
-      @if(isLoader){
-        <ion-spinner></ion-spinner>
-      }
-    <!-- <ion-avatar>
-      <img [src]="user?.profilePic || 'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="Profile Photo" />
-    </ion-avatar> -->
+    <input id="fileInput" type="file" class="select-profile-picture" (change)="onSelectFile($event)" />
+    @if(isLoader){
+    <ion-spinner></ion-spinner>
+    }
     <div class="main">
       <h5>{{user.name}}</h5>
       <div class="stats d-flex justify-content-between">
         <div>
           <p>Posts</p>
-          <p>123</p>
+          <p>{{posts?.length || 0}}</p>
         </div>
         <div>
           <p>Followers</p>
@@ -50,4 +42,9 @@
     }
   </div>
   }
+  <ion-action-sheet
+  trigger="open-action-sheet"
+  [buttons]="actionSheetButtons"
+  (didDismiss)="logResult($event)"
+></ion-action-sheet>
 </ion-content>

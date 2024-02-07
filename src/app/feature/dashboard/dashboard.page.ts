@@ -94,13 +94,19 @@ export class DashboardPage implements OnInit {
         finalize(() => {
           fileRef.getDownloadURL().subscribe((downloadURL) => {
             this.downloadURL = downloadURL;
-            const data = {
+            let data:any = {
               userId: userDetails.id,
               postImage: downloadURL,
               postTime: new Date(),
               userName: userDetails.name,
               postMessage: this.postForm.value.content,
             };
+            if (userDetails.profilePic) {
+              data = {
+                ...data,
+                profile: userDetails.profilePic
+              }
+            }
             this.postService.addPost(data).then((res: any) => {
               this.isToastOpen = true;
               this.clearImageonCancel();

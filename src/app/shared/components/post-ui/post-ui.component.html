@@ -2,7 +2,7 @@
 <ion-item-group>
   <ion-item-divider>
     <ion-avatar slot="start">
-      <img [src]="post.postImage" alt="post" />
+      <img [src]="post.profile || post.postImage" alt="post" />
     </ion-avatar>
     <ion-label>
       <h3>{{ post.userName }}</h3>
@@ -17,6 +17,7 @@
     <ion-text class="ms-2">{{ post.isLiked ? "You" : post.likes && post.likes[0]?.userName }}
       @if(post.likes.length >1){ and
       {{ post.likes?.length - 1 }} Others } </ion-text>}
+      <ion-icon name="chatbubble-ellipses-outline" slot="end" (click)="setOpen(true,post.id)"></ion-icon>
   </ion-item-divider>
   @if(post.postMessage){
   <ion-item-divider class="content-divider">
@@ -25,5 +26,47 @@
   }
   <ion-action-sheet [buttons]="post.userId === user.id ? actionSheetButtons:defaultActionSheetButtons"
     [trigger]="'open-action-sheet' + post.id" (didDismiss)="logResult($event,post)"></ion-action-sheet>
+    <ion-modal [isOpen]="isModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title class="ms-2">Comments</ion-title>
+            <ion-buttons slot="end" (click)="setOpen(false)">
+              <ion-icon name="close-outline" class="close-icon"></ion-icon>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          @if(comments.length) {
+            @for (comment of comments;track $index) {
+              <div class="d-flex">
+                <div>
+                  <ion-avatar class="comment-profile">
+                    <img [src]="comment?.profilePic || 'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="profile">
+                  </ion-avatar>
+                </div>
+                <div class="d-grid w-100">
+                  <ion-label class="mx-3">{{comment.userName}}</ion-label>
+                  <div class="d-flex justify-content-between">
+                    <ion-text class="mx-3">{{comment.commentMessage}}</ion-text>
+                    <ion-text><span>{{comment.timeAgo}}</span></ion-text>
+                  </div>
+                </div>
+              </div>
+          }
+          } @else {
+            <p class="text-center">No Comments Yet!</p>
+          }
+        </ion-content>
+        <ion-footer>
+          <ion-toolbar>
+            <ion-item>
+              <ion-input placeholder="Comment..." [(ngModel)]="comment"></ion-input>
+              <ion-icon name="paper-plane-outline" slot="end" (click)="sendComment(post.id)"></ion-icon>
+            </ion-item>
+          </ion-toolbar>
+        </ion-footer>
+      </ng-template>
+    </ion-modal>
 </ion-item-group>
 }

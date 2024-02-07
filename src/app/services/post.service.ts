@@ -26,6 +26,14 @@ export class PostService {
       .snapshotChanges();
   }
 
+  public getComments(postId: string) {
+    return this.firestore
+      .collection(TABLES.POSTS)
+      .doc(postId)
+      .collection(TABLES.COMMENTS,(ref) => ref.orderBy('commentTime', 'desc'))
+      .snapshotChanges();
+  }
+
   public getPost(postId: string) {
     return this.firestore
       .collection(TABLES.POSTS)
@@ -65,6 +73,15 @@ export class PostService {
       .doc(postId)
       .collection(TABLES.LIKES)
       .doc(data.userId)
+      .set(data);
+  }
+
+  public addComment(postId: string, data: any) {
+    return this.firestore
+      .collection(TABLES.POSTS)
+      .doc(postId)
+      .collection(TABLES.COMMENTS)
+      .doc()
       .set(data);
   }
 
